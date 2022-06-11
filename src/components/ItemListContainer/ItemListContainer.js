@@ -1,9 +1,14 @@
 import { getProducts } from "../asyncmock";
 import { useState ,useEffect } from "react";
+import { useParams } from "react-router-dom";
 import ItemList from "../ItemList/ItemList";
+import { Heading } from "@chakra-ui/react";
+
 
 const ItemListContainer = (props) => {
     const [products, setProducts] = useState([]);
+
+    const params = useParams
 
     useEffect(() => {
        getProducts()
@@ -23,7 +28,8 @@ const ItemListContainer = (props) => {
 
     return(
         <div>
-            <h1>Desafio 3 </h1>
+            <Heading>Desafio 4</Heading>
+            
             <ItemList products={products}/>
         </div>
     )

@@ -11,11 +11,14 @@ import {
     chakra,
     Tooltip,
   } from '@chakra-ui/react';
-  import { Link } from 'react-router-dom';
   import { FiShoppingCart } from 'react-icons/fi';
 
-const Item = ({id,name,img,price}) => {
+
+const ItemDetail = ({id,name,img,description}) => {
     return (
+        <>
+        <Text fontWeight={800}>Card detail</Text>
+        <p>{name}</p>
         <Center py={12} >
       <Box
       
@@ -66,9 +69,11 @@ const Item = ({id,name,img,price}) => {
           </Heading>
           <Stack direction={'row'} align={'center'}>
             <Text fontWeight={800} fontSize={'xl'} marginRight={'20%'}>
-              ${price}
+              {description}
             </Text>
-            <Tooltip
+            
+          </Stack>
+          <Tooltip
             margin={'2%'}
               label="Add to cart"
               bg="white"
@@ -79,16 +84,12 @@ const Item = ({id,name,img,price}) => {
                 <Icon as={FiShoppingCart} h={7} w={7} alignSelf={'center'} />
               </chakra.a>
             </Tooltip>
-          </Stack>
-          <Link to={`/detail/${id}`} className="Option">
-          <Button color={'gray.500'} fontSize={'sm'} textTransform={'uppercase'}>
-            Detalle
-          </Button>
-          </Link>
         </Stack>
       </Box>
     </Center>
+        
+        </>
     )
 }
 
-export default Item;
+export default ItemDetail;

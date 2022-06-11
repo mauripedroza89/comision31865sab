@@ -1,18 +1,14 @@
 import Item from "../Item/Item";
+import { Grid, GridItem } from '@chakra-ui/react'
 
-const myGrid = {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-around"
-}
 
 const ItemList = ({products}) => {
     return (
-        <ul style={myGrid}>
+        <Grid  templateColumns='repeat(4, 2fr)' gap={2}>
                 {products.map(prod =>
-                   <Item key={prod.id} {...prod}  />
+                  <GridItem> <Item key={prod.id} {...prod}  /></GridItem>
                 )}
-            </ul>
+            </Grid>
             
     )
 }
