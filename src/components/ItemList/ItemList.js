@@ -4,7 +4,7 @@ import { Grid, GridItem } from '@chakra-ui/react'
 
 const ItemList = ({products}) => {
     return (
-        <Grid  templateColumns='repeat(4, 2fr)' gap={2}>
+        <Grid templateColumns={{base: "repeat(1, 1fr)", md: "repeat(4, 5fr)"}} gap="5" >
                 {products.map(prod =>
                   <GridItem> <Item key={prod.id} {...prod}  /></GridItem>
                 )}

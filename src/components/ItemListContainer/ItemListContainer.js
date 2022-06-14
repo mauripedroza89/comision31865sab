@@ -1,22 +1,42 @@
-import { getProducts } from "../asyncmock";
+import { getProducts, getProductsByCategory } from "../asyncmock";
 import { useState ,useEffect } from "react";
 import { useParams } from "react-router-dom";
 import ItemList from "../ItemList/ItemList";
-import { Heading } from "@chakra-ui/react";
+import { Heading, Center } from "@chakra-ui/react";
 
 
 const ItemListContainer = (props) => {
     const [products, setProducts] = useState([]);
+    const [loading, setLoading] = useState(true);/* Usamos spiner mientras carga el componente */
 
-    const params = useParams
+    const { categoryId } = useParams()
 
     useEffect(() => {
-       getProducts()
-       .then(response => {
-           setProducts(response);
-       }) 
+        if(!categoryId){
+            getProducts().then(prods => {
+                setProducts(prods)
+            }).catch(error => {
+                console.log(error);
+            }).finally(() => {
+                setLoading(false)
+            })
+        }else{
+            getProductsByCategory(categoryId).then(prods => {
+                setProducts(prods)
+            }).catch(error => {
+                console.log(error);
+            }).finally(() => {
+                setLoading(false)
+            })
+        }
        
-    },[])
+       
+    },[categoryId])
+
+    /* aplicamos el spiner */
+    if(loading){
+        return <Center><Heading>Cargando...</Heading></Center>
+    }
     
     /* const prodsComponent = products.map(product => {
         return (
@@ -28,9 +48,12 @@ const ItemListContainer = (props) => {
 
     return(
         <div>
-            <Heading>Desafio 4</Heading>
+            <Center><Heading>Desafio 4</Heading></Center>            
+            {products.length > 0
+            ? <ItemList products={products}/>
+            : <h1>No hay productos en esta categoria</h1>
+            }
             
-            <ItemList products={products}/>
         </div>
     )
 }

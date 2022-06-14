@@ -2,12 +2,12 @@ import { useState, useEffect } from "react";
 import { getProductById } from "../asyncmock";
 import ItemDetail from "../ItemDetail/ItemDetail";
 import { useParams } from "react-router-dom";
-import { Heading } from "@chakra-ui/react";
+import { Heading, Center, Square, Circle } from "@chakra-ui/react";
 
 const ItemDetailContainer = (props) => {
     const [product,setProduct] = useState()
 
-    const productId = useParams();
+    const {productId} = useParams();
     
 
     useEffect(() =>{
@@ -19,8 +19,9 @@ const ItemDetailContainer = (props) => {
 
     return(
         <>
+        <Center bg='purple' h='100px' color='white'>
         <Heading>Detalle del producto</Heading>
-        
+        </Center>
         <ItemDetail {...product} />
         </>
     )

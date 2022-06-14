@@ -10,16 +10,22 @@ import {
     Icon,
     chakra,
     Tooltip,
+    Flex,
+    Link
   } from '@chakra-ui/react';
+  
   import { FiShoppingCart } from 'react-icons/fi';
 
 
 const ItemDetail = ({id,name,img,description}) => {
     return (
         <>
-        <Text fontWeight={800}>Card detail</Text>
-        <p>{name}</p>
+        <Flex align={'center'} justifyContent={'center'} flexDirection={'column'} >
+        <Heading fontWeight={500}>Card detail</Heading>
+        <Link href='/' ><Button backgroundColor={"blue.300"} >Regresar</Button></Link>
+        </Flex>
         <Center py={12} >
+        
       <Box
       
         role={'group'}
@@ -68,7 +74,7 @@ const ItemDetail = ({id,name,img,description}) => {
             {name}
           </Heading>
           <Stack direction={'row'} align={'center'}>
-            <Text fontWeight={800} fontSize={'xl'} marginRight={'20%'}>
+            <Text fontWeight={600} fontSize={'l'} marginRight={'10%'}>
               {description}
             </Text>
             

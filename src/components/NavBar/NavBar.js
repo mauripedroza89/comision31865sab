@@ -1,90 +1,269 @@
 import CartWidget from "../CartWidget/CartWidget";
-import { ReactNode } from 'react';
 import {
   Box,
   Flex,
-  Avatar,
-  HStack,
-  Link,
+  Text,
   IconButton,
-  Button,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  MenuDivider,
-  useDisclosure,
-  useColorModeValue,
   Stack,
+  Collapse,
+  Icon,
+  Link,
+  Button,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  useColorModeValue,
+  useBreakpointValue,
+  useDisclosure,
+  Avatar
 } from '@chakra-ui/react';
-import { HamburgerIcon, CloseIcon, AddIcon } from '@chakra-ui/icons';
-
-const Links = ['Dashboard', 'Projects', 'Team'];
-
-const NavLink = ({ children }: { children: ReactNode }) => (
-  <Link
-    px={2}
-    py={1}
-    rounded={'md'}
-    _hover={{
-      textDecoration: 'none',
-      bg: useColorModeValue('gray.200', 'gray.700'),
-    }}
-    href={'#'}>
-    {children}
-  </Link>
-);
-
-function NavBar(){
-  const { isOpen, onOpen, onClose } = useDisclosure();
+import {
+  HamburgerIcon,
+  CloseIcon,
+  ChevronDownIcon,
+  ChevronRightIcon,
+} from '@chakra-ui/icons';
 
 
-    return (
-      <>
-      <Box bg={useColorModeValue('blue.100', 'blue.900')} px={4}>
-        <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
+
+
+export default function NavBar() {
+  const { isOpen, onToggle } = useDisclosure();
+
+  return (
+    <Box className="test">
+      <Flex
+        bg={useColorModeValue('blue.400', 'black')}
+        color={useColorModeValue('black', 'blue.400')}
+        minH={'60px'}
+        py={{ base: 2 }}
+        px={{ base: 4 }}
+        borderBottom={1}
+        borderStyle={'solid'}
+        borderColor={useColorModeValue('red', 'red')}
+        align={'center'}>
+        <Flex
+          flex={{ base: 1, md: 'auto' }}
+          ml={{ base: -2 }}
+          display={{ base: 'flex', md: 'none' }}>
           <IconButton
-            size={'md'}
-            icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
-            aria-label={'Open Menu'}
-            display={{ md: 'none' }}
-            onClick={isOpen ? onClose : onOpen}
+            onClick={onToggle}
+            icon={
+              isOpen ? <CloseIcon w={3} h={3} /> : <HamburgerIcon w={5} h={5} />
+            }
+            variant={'ghost'}
+            aria-label={'Toggle Navigation'}
           />
-          <HStack spacing={8} alignItems={'center'}>
+        </Flex>
+        <Flex flex={{ base: 3 }} justify={{ base: 'center', md: 'center' }}>
+          <Text
+            textAlign={useBreakpointValue({ base: 'center', md: 'center' })}
+            fontFamily={'heading'}
+            color={useColorModeValue('black', 'black')}>
             <Link href={'/'}><Button>Rock Clothes</Button></Link>
-            <HStack
-              as={'nav'}
-              spacing={4}
-              display={{ base: 'none', md: 'flex' }}>
-              {Links.map((link) => (
-                <NavLink key={link}>{link}</NavLink>
-              ))}
-            </HStack>
-          </HStack>
-          <Flex alignItems={'center'}>
-            <Button
-              
-              colorScheme={'teal'}
-              >
+            
+          </Text>
+
+          <Flex display={{ base: 'none', md: 'flex' }} ml={10}>
+            <DesktopNav />
+            
+          </Flex>
+          <Flex>
+          <Button colorScheme={'teal'} margin={"0 30%"}>
               <CartWidget/>
             </Button>
-           
-          </Flex>
+            </Flex>
         </Flex>
 
-        {isOpen ? (
-          <Box pb={4} display={{ md: 'none' }}>
-            <Stack as={'nav'} spacing={4}>
-              {Links.map((link) => (
-                <NavLink key={link}>{link}</NavLink>
-              ))}
-            </Stack>
-          </Box>
-        ) : null}
-      </Box>
+        <Stack
+          flex={{ base: 1, md: 0 }}
+          justify={'center'}
+          direction={'row'}
+          spacing={6}>
+          
+        </Stack>
+      </Flex>
 
-    </>
-    )
+      <Collapse in={isOpen} animateOpacity>
+        <MobileNav />
+      </Collapse>
+      
+    </Box>
+  );
 }
 
-export default NavBar;
+const DesktopNav = () => {
+  const linkColor = useColorModeValue('red.500', '#F2F4F3');
+  const linkHoverColor = useColorModeValue('green', '#F2F4F3');
+  const popoverContentBgColor = useColorModeValue('orange', 'green');
+
+  return (
+    <Stack direction={'row'} spacing={4} paddingTop={3}>
+      {NAV_ITEMS.map((navItem) => (
+        <Box key={navItem.label}>
+          <Popover trigger={'hover'} placement={'bottom-start'}>
+            <PopoverTrigger>
+              <Link
+                p={2}
+                href={navItem.href ?? '#'}
+                fontSize={'xl'}
+                fontWeight={800}
+                color={linkColor}
+                _hover={{
+                  textDecoration: 'none',
+                  color: linkHoverColor,
+                }}>
+                {navItem.label}
+              </Link>
+            </PopoverTrigger>
+
+            {navItem.children && (
+              <PopoverContent
+                border={0}
+                boxShadow={'xl'}
+                bg={popoverContentBgColor}
+                p={4}
+                rounded={'xl'}
+                minW={'sm'}>
+                <Stack>
+                  {navItem.children.map((child) => (
+                    <DesktopSubNav key={child.label} {...child} />
+                  ))}
+                </Stack>
+              </PopoverContent>
+            )}
+          </Popover>
+        </Box>
+      ))}
+    </Stack>
+  );
+};
+
+const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
+  return (
+    <Link
+      href={href}
+      role={'group'}
+      display={'block'}
+      p={2}
+      rounded={'md'}
+      _hover={{ bg: useColorModeValue('red', '#f2f4f3') }}>
+      <Stack direction={'row'} align={'center'}>
+        <Box>
+          <Text
+            transition={'all .3s ease'}
+            _groupHover={{ color: '#a9927d' }}
+            fontWeight={500}>
+            {label}
+          </Text>
+          <Text fontSize={'sm'}>{subLabel}</Text>
+        </Box>
+        <Flex
+          transition={'all .3s ease'}
+          transform={'translateX(-10px)'}
+          opacity={0}
+          _groupHover={{ opacity: '100%', transform: 'translateX(0)' }}
+          justify={'center'}
+          align={'center'}
+          flex={1}>
+          <Icon color={'red.400'} w={5} h={5} as={ChevronRightIcon} />
+        </Flex>
+      </Stack>
+    </Link>
+  );
+};
+
+const MobileNav = () => {
+  return (
+    <Stack
+      bg={useColorModeValue('#f2f4f3', '#f2f4f3')}
+      p={4}
+      display={{ md: 'none' }}>
+      {NAV_ITEMS.map((navItem) => (
+        <MobileNavItem key={navItem.label} {...navItem} />
+      ))}
+    </Stack>
+  );
+};
+
+const MobileNavItem = ({ label, children, href }: NavItem) => {
+  const { isOpen, onToggle } = useDisclosure();
+
+  return (
+    <Stack spacing={4} onClick={children && onToggle}>
+      <Flex
+        py={2}
+        as={Link}
+        href={href ?? '#'}
+        justify={'space-between'}
+        align={'center'}
+        _hover={{
+          textDecoration: 'none',
+        }}>
+        <Text
+          fontWeight={600}
+          color={useColorModeValue('#0a0908', '#0a0908')}>
+          {label}
+        </Text>
+        {children && (
+          <Icon
+            as={ChevronDownIcon}
+            transition={'all .25s ease-in-out'}
+            transform={isOpen ? 'rotate(180deg)' : ''}
+            w={6}
+            h={6}
+          />
+        )}
+      </Flex>
+
+      <Collapse in={isOpen} animateOpacity style={{ marginTop: '0!important' }}>
+        <Stack
+          mt={2}
+          pl={4}
+          borderLeft={1}
+          borderStyle={'solid'}
+          borderColor={useColorModeValue('#0a0908', '#5e503f')}
+          align={'center'}>
+          {children &&
+            children.map((child) => (
+              <Link key={child.label} py={2} href={child.href}>
+                {child.label}
+              </Link>
+            ))}
+        </Stack>
+      </Collapse>
+    </Stack>
+  );
+};
+
+interface NavItem {
+  label: string;
+  subLabel?: string;
+  children?: Array<NavItem>;
+  href?: string;
+}
+
+const NAV_ITEMS: Array<NavItem> = [
+
+  {
+    label: 'Jackets',
+    href: '/category/jackets',
+  },
+  {
+      label: 'Jeans',
+      href: '/category/jeans',
+    },
+    
+  {
+    label: 'Boots',
+    href: '/category/boots',
+  },
+  {
+    label: 'Feedback',
+    href: '#',
+  },
+  {
+      label: 'Contact',
+      href: '#',
+  },
+];
