@@ -68,17 +68,7 @@ const Item = ({id,name,img,price}) => {
             <Text fontWeight={800} fontSize={'xl'} marginRight={'20%'}>
               ${price}
             </Text>
-            <Tooltip
-            margin={'2%'}
-              label="Add to cart"
-              bg="white"
-              placement={'top'}
-              color={'gray.800'}
-              fontSize={'1.2em'}>
-              <chakra.a href={'#'} display={'flex'}>
-                <Icon as={FiShoppingCart} h={7} w={7} alignSelf={'center'} />
-              </chakra.a>
-            </Tooltip>
+            
           </Stack>
           <Link to={`/detail/${id}`} className="Option">
           <Button color={'gray.500'} fontSize={'sm'} textTransform={'uppercase'}>

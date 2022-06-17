@@ -4,7 +4,7 @@ import ItemDetail from "../ItemDetail/ItemDetail";
 import { useParams } from "react-router-dom";
 import { Heading, Center, Square, Circle } from "@chakra-ui/react";
 
-const ItemDetailContainer = (props) => {
+const ItemDetailContainer = () => {
     const [product,setProduct] = useState()
 
     const {productId} = useParams();
@@ -14,7 +14,7 @@ const ItemDetailContainer = (props) => {
         getProductById(productId).then(response => {
             setProduct(response)
         })
-    },[])
+    },[productId])
     
 
     return(

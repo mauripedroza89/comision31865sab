@@ -13,11 +13,24 @@ import {
     Flex,
     Link
   } from '@chakra-ui/react';
-  
-  import { FiShoppingCart } from 'react-icons/fi';
+import { useState, useContext } from 'react';
+import ItemCount from '../ItemCount/ItemCount';
+import CartContext from '../../context/CartContext'
 
 
-const ItemDetail = ({id,name,img,description}) => {
+const ItemDetail = ({id,name,img,description,price,stock}) => {
+
+  const { addItem } = useContext(CartContext)
+ 
+ 
+    const [quantityAdd,setQuantityAdd] = useState(0);
+
+    const handleAdd = (quantity) => {
+      console.log(`se agregaron ${quantity} ${name}`);
+      addItem({ id, name, price, quantity})
+      setQuantityAdd(quantity)
+    }
+
     return (
         <>
         <Flex align={'center'} justifyContent={'center'} flexDirection={'column'} >
@@ -79,17 +92,11 @@ const ItemDetail = ({id,name,img,description}) => {
             </Text>
             
           </Stack>
-          <Tooltip
-            margin={'2%'}
-              label="Add to cart"
-              bg="white"
-              placement={'top'}
-              color={'gray.800'}
-              fontSize={'1.2em'}>
-              <chakra.a href={'#'} display={'flex'}>
-                <Icon as={FiShoppingCart} h={7} w={7} alignSelf={'center'} />
-              </chakra.a>
-            </Tooltip>
+          {quantityAdd === 0
+            ? <ItemCount stock={stock} onAdd={handleAdd}/>
+            : <Link href='/cart'><Button >Terminar compra</Button></Link>
+          }
+          
         </Stack>
       </Box>
     </Center>

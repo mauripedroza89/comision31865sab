@@ -6,7 +6,7 @@ import { Heading, Center } from "@chakra-ui/react";
 
 
 const ItemListContainer = (props) => {
-    const [products, setProducts] = useState([]);
+    const [products, setProducts] = useState();
     const [loading, setLoading] = useState(true);/* Usamos spiner mientras carga el componente */
 
     const { categoryId } = useParams()

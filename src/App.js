@@ -1,37 +1,28 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, createContext } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import ItemDetailContainer from './components/ItemDetailContainer/ItemDetailContainer';
 import ItemListContainer from './components/ItemListContainer/ItemListContainer';
 import NavBar from './components/NavBar/NavBar';
-import {
-    Button,
-    Stack
-} from '@chakra-ui/react';
+import { CartProvider } from './context/CartContext';
 
 
 function App() {
-  /* const [page,setPage] = useState('list') */
-
+  const [cart,setCart] = useState([]);
+  console.log(cart);
   return (
     <div className="App">
-      {/* <Stack direction={'row'} align={'center'}>
-      <Button color={'blue.200'} onClick={()=> setPage('list')}>Lista</Button>
-      <Button color={'blue.200'} onClick={()=> setPage('detail')} >Detalle</Button>
-      </Stack>
-     {page === 'list' && <ItemListContainer/>}
-     {page === 'detail' &&  <ItemDetailContainer/>}*/}
-
+  <CartProvider >
     <BrowserRouter>
       <NavBar/>
-      
       <Routes>
         <Route path='/' element={<ItemListContainer/>} />
         <Route path='/category/:categoryId' element={<ItemListContainer/>} />
-        <Route path='/detail/:productId' element={<ItemDetailContainer/>} />
-
-     </Routes> 
-
+        <Route path='/detail/:productId' element={<ItemDetailContainer  />} />
+        <Route path='/cart' element={<h1>Carrito</h1>} />
+      </Routes> 
      </BrowserRouter>
+  </CartProvider>
+     
     </div>
   );
 }
