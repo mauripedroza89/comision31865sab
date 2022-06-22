@@ -17,6 +17,7 @@ import {
   useDisclosure,
   Avatar
 } from '@chakra-ui/react';
+import {useNavigate} from "react-router-dom";
 import {
   HamburgerIcon,
   CloseIcon,
@@ -29,6 +30,7 @@ import {
 
 export default function NavBar() {
   const { isOpen, onToggle } = useDisclosure();
+  const navigate = useNavigate();
 
   return (
     <Box className="test">
@@ -60,7 +62,7 @@ export default function NavBar() {
             textAlign={useBreakpointValue({ base: 'center', md: 'center' })}
             fontFamily={'heading'}
             color={useColorModeValue('black', 'black')}>
-            <Link href={'/'}><Button>Rock Clothes</Button></Link>
+            <Button onClick={()=>navigate("/")}>Rock Clothes</Button>
             
           </Text>
 
@@ -69,7 +71,7 @@ export default function NavBar() {
             
           </Flex>
           <Flex>
-          <Button colorScheme={'teal'} margin={"0 30%"}>
+          <Button onClick={()=>navigate("/cart")} colorScheme={'teal'} margin={"0 30%"}>
               <CartWidget/>
             </Button>
             </Flex>
@@ -96,6 +98,7 @@ const DesktopNav = () => {
   const linkColor = useColorModeValue('red.500', '#F2F4F3');
   const linkHoverColor = useColorModeValue('green', '#F2F4F3');
   const popoverContentBgColor = useColorModeValue('orange', 'green');
+  const navigate = useNavigate();
 
   return (
     <Stack direction={'row'} spacing={4} paddingTop={3}>
@@ -105,7 +108,7 @@ const DesktopNav = () => {
             <PopoverTrigger>
               <Link
                 p={2}
-                href={navItem.href ?? '#'}
+                onClick={() => navigate(navItem.href)}
                 fontSize={'xl'}
                 fontWeight={800}
                 color={linkColor}

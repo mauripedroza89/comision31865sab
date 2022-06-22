@@ -11,14 +11,18 @@ import {
     chakra,
     Tooltip,
     Flex,
-    Link
   } from '@chakra-ui/react';
+import {useNavigate} from "react-router-dom";
 import { useState, useContext } from 'react';
 import ItemCount from '../ItemCount/ItemCount';
 import CartContext from '../../context/CartContext'
 
 
+  
+
+
 const ItemDetail = ({id,name,img,description,price,stock}) => {
+  const navigate = useNavigate();
 
   const { addItem } = useContext(CartContext)
  
@@ -35,7 +39,7 @@ const ItemDetail = ({id,name,img,description,price,stock}) => {
         <>
         <Flex align={'center'} justifyContent={'center'} flexDirection={'column'} >
         <Heading fontWeight={500}>Card detail</Heading>
-        <Link href='/' ><Button backgroundColor={"blue.300"} >Regresar</Button></Link>
+        <Button onClick={()=>navigate("/")}>Regresar</Button>
         </Flex>
         <Center py={12} >
         
@@ -94,7 +98,7 @@ const ItemDetail = ({id,name,img,description,price,stock}) => {
           </Stack>
           {quantityAdd === 0
             ? <ItemCount stock={stock} onAdd={handleAdd}/>
-            : <Link href='/cart'><Button >Terminar compra</Button></Link>
+            : <Button onClick={()=>navigate("/cart")} >Terminar compra</Button>
           }
           
         </Stack>
