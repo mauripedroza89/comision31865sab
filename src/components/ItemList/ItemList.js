@@ -1,4 +1,5 @@
 import Item from "../Item/Item";
+import { memo } from 'react';
 import { Grid, GridItem } from '@chakra-ui/react'
 
 
@@ -13,4 +14,4 @@ const ItemList = ({products}) => {
     )
 }
 
-export default ItemList;
+export default memo(ItemList);

@@ -3,33 +3,35 @@ import { useState ,useEffect } from "react";
 import { useParams } from "react-router-dom";
 import ItemList from "../ItemList/ItemList";
 import { Heading, Center } from "@chakra-ui/react";
+import { getDocs, collection, query, where } from 'firebase/firestore';
+import { db } from "../../services/firebase";
 
 
 const ItemListContainer = (props) => {
     const [products, setProducts] = useState();
     const [loading, setLoading] = useState(true);/* Usamos spiner mientras carga el componente */
-
+    const [title, setTitle] = useState('Bienvenidos')
     const { categoryId } = useParams()
 
     useEffect(() => {
-        if(!categoryId){
-            getProducts().then(prods => {
-                setProducts(prods)
-            }).catch(error => {
-                console.log(error);
-            }).finally(() => {
-                setLoading(false)
-            })
-        }else{
-            getProductsByCategory(categoryId).then(prods => {
-                setProducts(prods)
-            }).catch(error => {
-                console.log(error);
-            }).finally(() => {
-                setLoading(false)
-            })
-        }
-       
+        setLoading(true)
+//esto sustituye el asyncMock
+setLoading(true)
+
+const collectionRef = categoryId ? ( 
+    query(collection(db, 'products'), where('category', '==', categoryId))
+) : ( collection(db, 'products') )
+
+getDocs(collectionRef).then(response => {
+    const productsFormatted = response.docs.map(doc => {
+        return { id: doc.id, ...doc.data() }
+    })
+    setProducts(productsFormatted)
+}).catch(error => {
+    console.log(error)
+}).finally(() => {
+    setLoading(false)
+})
        
     },[categoryId])
 
