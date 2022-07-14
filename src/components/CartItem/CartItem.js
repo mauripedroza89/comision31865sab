@@ -1,3 +1,5 @@
+import { useContext } from 'react';
+import CartContext from '../../context/CartContext';
 import { 
     CloseButton, 
     Flex, 
@@ -13,8 +15,13 @@ import * as React from 'react';
 
 
 
-export const CartItem = () => {
-  
+const CartItem = ({ id, name, quantity, price, img }) => {
+  const { removeItem } = useContext(CartContext)
+
+    const handleRemove = (id) => {
+        removeItem(id)
+    }
+
 
   return (
     <Flex borderWidth="1px" rounded="lg" padding="8" width="full" direction={{ base: 'column', md: 'row' }} justify="space-between" align="center">
@@ -25,16 +32,16 @@ export const CartItem = () => {
         width="120px"
         height="120px"
         fit="cover"
-        src={''}
+        src={img} 
         alt={'imagen'}
         draggable="false"
         loading="lazy"
       />
       <Box pt="4">
         <Stack spacing="0.5">
-          <Text fontWeight="medium">Nombre</Text>
+          <Text fontWeight="medium">{name}</Text>
           <Text  fontSize="sm">
-            Cantidad: 3
+            Cantidad: {quantity}
           </Text>
         </Stack>
         
@@ -44,9 +51,9 @@ export const CartItem = () => {
       {/* Desktop */}
       <Flex width="full" justify="space-between" display={{ base: 'none', md: 'flex' }}>
         
-        <Heading >$100</Heading>
-        <Text>Subtotal: $100 </Text>
-        <Button aria-label={`Delete name from cart`} onClick={''}>Borrar</Button>
+        <Heading fontSize="sm" >Precio: ${price}</Heading>
+        <Text>Subtotal: ${price * quantity} </Text>
+        <Button aria-label={`Delete name from cart`} onClick={() => handleRemove(id)}>Borrar</Button>
       </Flex>
 
       {/* Mobile */}
@@ -57,12 +64,12 @@ export const CartItem = () => {
         justify="space-between"
         display={{ base: 'flex', md: 'none' }}
       >
-        <Link fontSize="sm" textDecor="underline">
-          Delete
-        </Link>
+      <Button aria-label={`Delete name from cart`} onClick={() => handleRemove(id)}>Borrar</Button>
         
-        <Heading >$100</Heading>
+      <Heading >Precio: ${price}</Heading>
       </Flex>
     </Flex>
   )
 }
+
+export default CartItem
