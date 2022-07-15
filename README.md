@@ -1,7 +1,7 @@
 # Rock Clothes
 
 # Demo
-[Deploy](https://zuvcommerce.vercel.app)
+[Deploy](https://rockclothes.netlify.app)
 
 ## El mejor lugar para encontrar tu ropa rockera, punk y dark!
 
