@@ -16,16 +16,24 @@ import {useNavigate} from "react-router-dom";
 import { useState, useContext } from 'react';
 import ItemCount from '../ItemCount/ItemCount';
 import CartContext from '../../context/CartContext'
+import { useNotification } from '../../notification/Notification';
 
 
   
 
 
 const ItemDetail = ({id,name,img,description,price,stock}) => {
+  const [quantityAdded, setQuantityAdded] = useState(0)
   const navigate = useNavigate();
 
   const { addItem } = useContext(CartContext)
+  const setNotification = useNotification()
  
+  const handleOnAdd = (quantity) => {
+    setNotification('success',`Se agregaron ${quantity} ${name}`)
+    addItem({ id, name, price, quantity})
+    setQuantityAdded(quantity)
+}
  
     const [quantityAdd,setQuantityAdd] = useState(0);
 

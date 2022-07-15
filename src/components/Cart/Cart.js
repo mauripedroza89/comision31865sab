@@ -9,6 +9,11 @@ import {
     Stack,
     Button,
     Center,
+    FormControl,
+    Input,
+  FormLabel,
+  FormErrorMessage,
+  FormHelperText,
     useColorModeValue as mode,
   } from '@chakra-ui/react';
 import {useNavigate} from "react-router-dom";
@@ -22,8 +27,15 @@ import { db } from '../../services/firebase/index';
   
 const Cart = () => {
     const navigate = useNavigate();
-    const [loading,setLoading] = useState(false)
+    const [loading,setLoading] = useState(false);
+    const [name ,setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [address, setAddress] = useState('');
     const {cart, totalQuantity,getTotal, clearCart} = useContext(CartContext);
+
+   
+  
+    
 
     const total = getTotal()
 
@@ -33,9 +45,10 @@ const Cart = () => {
       setLoading(true)
       const objOrder = {
         buyer: {
-          name: "Mauricio Garcez",
-          email: "garcez89@gmail.com",
-          address: "Garcez 89"
+          name: name,
+          email: email,
+          address:address
+          
         },
         items: cart,
         total: total
@@ -105,6 +118,7 @@ const Cart = () => {
       return <Center><Heading>No hay articulos en el carrito</Heading></Center>
     }
 
+    
 return (
     
     <Box
@@ -113,15 +127,17 @@ return (
       mx="auto"
       px={{ base: '4', md: '8', lg: '12' }}
       py={{ base: '6', md: '8', lg: '12' }}
+      bgColor="rgb(222, 217, 255)"
     >
       <Stack
         direction={{ base: 'column', lg: 'row' }}
         align={{ lg: 'flex-start' }}
         spacing={{ base: '8', md: '16' }}
+        bgColor="white"
       >
         <Stack spacing={{ base: '8', md: '10' }} flex="2">
           <Heading fontSize="2xl" fontWeight="extrabold">
-            Tu carrito (3 items)
+            Tu carrito: {totalQuantity} articulos
           </Heading>
   
           <Stack spacing="6">
@@ -132,11 +148,26 @@ return (
           </Stack>
         </Stack>
             
-        <Flex direction="column" align="center" flex="1">
+        
+      </Stack>
+      <Flex direction="column" align="center" flex="1" bgColor="white">
+      
           {/* <CartOrderSummary /> */}
           <Heading>Total: ${total}</Heading>
           <br/>
-          <Button onClick={handleCreateOrder}>Crear orden</Button>
+          <Center>
+          <FormControl >
+            <FormLabel  htmlFor='name'>Nombre</FormLabel>
+            <Input width='auto' value={email} type='email' onChange={event => setEmail(event.target.value)} />
+            <FormLabel  htmlFor='email' >Correo electronico</FormLabel>
+            <Input width='auto' value={name} type='name' onChange={event => setName(event.target.value)} />
+            <FormLabel  htmlFor='email' >Direccion</FormLabel>
+            <Input width='auto' value={address} type='address' onChange={event => setAddress(event.target.value)} />
+            
+          </FormControl>
+          </Center>
+          <br/>
+          <Button onClick={handleCreateOrder} disabled={!email || !name || !address}>Crear orden</Button>
           <br/>
           <Button onClick={() => clearCart()}>Limpiar carrito</Button>
           <br/>
@@ -146,7 +177,6 @@ return (
             <Link color={mode('blue.500', 'blue.200')} onClick={()=>navigate("/")}>Continuar comprando</Link>
           </HStack>
         </Flex>
-      </Stack>
     </Box>
   )
 }
